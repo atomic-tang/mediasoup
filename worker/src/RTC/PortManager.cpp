@@ -162,15 +162,8 @@ namespace RTC
 			{
 				case Transport::UDP:
 					uvHandle = reinterpret_cast<uv_handle_t*>(new uv_udp_t());
-#ifdef _WIN32
-					// TODO: Avoid libuv bug in Windows. Let's remove this condition once
-					// the issue is fixed.
-					//   https://github.com/libuv/libuv/issues/2806
-					err = uv_udp_init(DepLibUV::GetLoop(), reinterpret_cast<uv_udp_t*>(uvHandle));
-#else
-					err = uv_udp_init_ex(
-					  DepLibUV::GetLoop(), reinterpret_cast<uv_udp_t*>(uvHandle), UV_UDP_RECVMMSG);
-#endif
+					err      = uv_udp_init_ex(
+            DepLibUV::GetLoop(), reinterpret_cast<uv_udp_t*>(uvHandle), UV_UDP_RECVMMSG);
 					break;
 
 				case Transport::TCP:
@@ -445,8 +438,8 @@ namespace RTC
 
 		for (auto& kv : PortManager::mapUdpIpPorts)
 		{
-			auto& ip    = kv.first;
-			auto& ports = kv.second;
+			const auto& ip = kv.first;
+			auto& ports    = kv.second;
 
 			(*jsonUdpIt)[ip] = json::array();
 			auto jsonIpIt    = jsonUdpIt->find(ip);
@@ -468,8 +461,8 @@ namespace RTC
 
 		for (auto& kv : PortManager::mapTcpIpPorts)
 		{
-			auto& ip    = kv.first;
-			auto& ports = kv.second;
+			const auto& ip = kv.first;
+			auto& ports    = kv.second;
 
 			(*jsonTcpIt)[ip] = json::array();
 			auto jsonIpIt    = jsonTcpIt->find(ip);

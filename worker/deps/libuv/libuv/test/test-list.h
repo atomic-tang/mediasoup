@@ -180,6 +180,7 @@ TEST_DECLARE   (udp_open_connect)
 #ifndef _WIN32
 TEST_DECLARE   (udp_send_unix)
 #endif
+TEST_DECLARE   (udp_sendmmsg_error)
 TEST_DECLARE   (udp_try_send)
 TEST_DECLARE   (pipe_bind_error_addrinuse)
 TEST_DECLARE   (pipe_bind_error_addrnotavail)
@@ -346,6 +347,7 @@ TEST_DECLARE   (fs_symlink_dir)
 #ifdef _WIN32
 TEST_DECLARE   (fs_symlink_junction)
 TEST_DECLARE   (fs_non_symlink_reparse_point)
+TEST_DECLARE   (fs_lstat_windows_store_apps)
 TEST_DECLARE   (fs_open_flags)
 #endif
 #if defined(_WIN32) && !defined(USING_UV_SHARED)
@@ -409,6 +411,7 @@ TEST_DECLARE   (fs_open_readonly_acl)
 TEST_DECLARE   (fs_fchmod_archive_readonly)
 TEST_DECLARE   (fs_invalid_mkdir_name)
 #endif
+TEST_DECLARE   (fs_get_system_error)
 TEST_DECLARE   (strscpy)
 TEST_DECLARE   (threadpool_queue_work_simple)
 TEST_DECLARE   (threadpool_queue_work_einval)
@@ -718,6 +721,7 @@ TASK_LIST_START
   TEST_ENTRY  (udp_multicast_join)
   TEST_ENTRY  (udp_multicast_join6)
   TEST_ENTRY  (udp_multicast_ttl)
+  TEST_ENTRY  (udp_sendmmsg_error)
   TEST_ENTRY  (udp_try_send)
 
   TEST_ENTRY  (udp_open)
@@ -978,6 +982,7 @@ TASK_LIST_START
 #ifdef _WIN32
   TEST_ENTRY  (fs_symlink_junction)
   TEST_ENTRY  (fs_non_symlink_reparse_point)
+  TEST_ENTRY  (fs_lstat_windows_store_apps)
   TEST_ENTRY  (fs_open_flags)
 #endif
 #if defined(_WIN32) && !defined(USING_UV_SHARED)
@@ -1007,7 +1012,7 @@ TASK_LIST_START
   TEST_ENTRY  (fs_event_close_with_pending_event)
   TEST_ENTRY  (fs_event_close_in_callback)
   TEST_ENTRY  (fs_event_start_and_close)
-  TEST_ENTRY  (fs_event_error_reporting)
+  TEST_ENTRY_CUSTOM (fs_event_error_reporting, 0, 0, 60000)
   TEST_ENTRY  (fs_event_getpath)
   TEST_ENTRY  (fs_scandir_empty_dir)
   TEST_ENTRY  (fs_scandir_non_existent_dir)
@@ -1036,6 +1041,7 @@ TASK_LIST_START
   TEST_ENTRY  (fs_fchmod_archive_readonly)
   TEST_ENTRY  (fs_invalid_mkdir_name)
 #endif
+  TEST_ENTRY  (fs_get_system_error)
   TEST_ENTRY  (get_osfhandle_valid_handle)
   TEST_ENTRY  (open_osfhandle_valid_handle)
   TEST_ENTRY  (strscpy)

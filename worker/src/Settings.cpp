@@ -65,7 +65,7 @@ void Settings::SetConfiguration(int argc, char* argv[])
 	opterr = 0; // Don't allow getopt to print error messages.
 	while ((c = getopt_long_only(argc, argv, "", options, &optionIdx)) != -1)
 	{
-		if (optarg == nullptr)
+		if (!optarg)
 			MS_THROW_TYPE_ERROR("unknown configuration parameter: %s", optarg);
 
 		switch (c)
@@ -198,6 +198,8 @@ void Settings::PrintConfiguration()
 		logTags.emplace_back("svc");
 	if (Settings::configuration.logTags.sctp)
 		logTags.emplace_back("sctp");
+	if (Settings::configuration.logTags.message)
+		logTags.emplace_back("message");
 
 	if (!logTags.empty())
 	{
@@ -321,6 +323,8 @@ void Settings::SetLogTags(const std::vector<std::string>& tags)
 			newLogTags.svc = true;
 		else if (tag == "sctp")
 			newLogTags.sctp = true;
+		else if (tag == "message")
+			newLogTags.message = true;
 	}
 
 	Settings::configuration.logTags = newLogTags;
